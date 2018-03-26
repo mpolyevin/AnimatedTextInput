@@ -50,6 +50,11 @@ extension AnimatedTextView: TextInput {
         get { return text }
         set { self.text = newValue }
     }
+    
+    public var textFieldRightViewMode: UITextFieldViewMode? {
+        get { return nil }
+        set { }
+    }
 
     public var currentSelectedTextRange: UITextRange? {
         get { return self.selectedTextRange }

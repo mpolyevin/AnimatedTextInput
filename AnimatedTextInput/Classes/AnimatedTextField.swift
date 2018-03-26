@@ -1,4 +1,5 @@
 import UIKit
+import Foundation
 
 final public class AnimatedTextField: UITextField {
 
@@ -43,7 +44,7 @@ final public class AnimatedTextField: UITextField {
     }
     
     @discardableResult override public func becomeFirstResponder() -> Bool {
-        if let alignment = (textAttributes?[NSAttributedStringKey.paragraphStyle] as? NSMutableParagraphStyle)?.alignment {
+        if let alignment = (textAttributes?[.paragraphStyle] as? NSMutableParagraphStyle)?.alignment {
             textAlignment = alignment
         }
         return super.becomeFirstResponder()
@@ -111,6 +112,16 @@ final public class AnimatedTextField: UITextField {
 }
 
 extension AnimatedTextField: TextInput {
+    
+    public var textFieldRightViewMode: UITextFieldViewMode? {
+        get { return self.rightViewMode }
+        set {
+            if let newValue = newValue {
+                self.rightViewMode = newValue
+            }
+        }
+    }
+    
 
     public func configureInputView(newInputView: UIView) {
         inputView = newInputView
