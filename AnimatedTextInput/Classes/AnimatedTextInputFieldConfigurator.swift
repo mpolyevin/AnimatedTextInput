@@ -72,9 +72,7 @@ fileprivate struct AnimatedTextInputPasswordConfigurator {
             disclosureButton.setImage(selectedImage, for: .selected)
             textField.add(disclosureButton: disclosureButton) {
                 disclosureButton.isSelected = !disclosureButton.isSelected
-                textField.resignFirstResponder()
                 textField.isSecureTextEntry = !textField.isSecureTextEntry
-                textField.becomeFirstResponder()
             }
         }
         return textField
