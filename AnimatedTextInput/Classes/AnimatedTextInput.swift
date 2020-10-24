@@ -253,7 +253,7 @@ open class AnimatedTextInput: UIControl {
     }
 
     fileprivate func addTextInputConstraints() {
-        pinLeading(toLeadingOf: textInput.view, constant: style.leftMargin)
+        pinLeading(toLeadingOf: textInput.view, constant: style.leftMargin + 12)
         if disclosureView == nil {
             textInputTrailingConstraint = pinTrailing(toTrailingOf: textInput.view, constant: style.rightMargin)
         }
