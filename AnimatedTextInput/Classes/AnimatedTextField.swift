@@ -16,7 +16,7 @@ final public class AnimatedTextField: UITextField {
     var rightViewPadding: CGFloat
     weak public var textInputDelegate: TextInputDelegate?
 
-    public var textAttributes: [NSAttributedStringKey: Any]?
+    public var textAttributes: [NSAttributedString.Key: Any]?
     public var contentInset: UIEdgeInsets = .zero
 
     fileprivate var disclosureButtonAction: (() -> Void)?
@@ -113,7 +113,7 @@ final public class AnimatedTextField: UITextField {
 
 extension AnimatedTextField: TextInput {
     
-    public var textFieldRightViewMode: UITextFieldViewMode? {
+    public var textFieldRightViewMode: UITextField.ViewMode? {
         get { return self.rightViewMode }
         set {
             if let newValue = newValue {
@@ -135,7 +135,7 @@ extension AnimatedTextField: TextInput {
         return position(from: from, offset: offset)
     }
     
-    public func changeClearButtonMode(with newClearButtonMode: UITextFieldViewMode) {
+    public func changeClearButtonMode(with newClearButtonMode: UITextField.ViewMode) {
         clearButtonMode = newClearButtonMode
     }
 
@@ -149,7 +149,7 @@ extension AnimatedTextField: TextInput {
         set { self.selectedTextRange = newValue }
     }
 
-    open var currentBeginningOfDocument: UITextPosition? {
+    public var currentBeginningOfDocument: UITextPosition? {
         get { return self.beginningOfDocument }
     }
 }

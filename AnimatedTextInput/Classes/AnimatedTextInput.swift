@@ -30,12 +30,12 @@ open class AnimatedTextInput: UIControl {
         }
     }
     
-    open var rightViewMode: UITextFieldViewMode? {
+    open var rightViewMode: UITextField.ViewMode? {
         get { return textInput.textFieldRightViewMode }
         set { textInput.textFieldRightViewMode = newValue }
     }
 
-    open var clearButtonMode: UITextFieldViewMode = .whileEditing {
+    open var clearButtonMode: UITextField.ViewMode = .whileEditing {
         didSet {
             textInput.changeClearButtonMode(with: clearButtonMode)
         }
@@ -49,7 +49,7 @@ open class AnimatedTextInput: UIControl {
 
     open var placeholderAlignment: CATextLayer.Alignment = .natural {
         didSet {
-            placeholderLayer.alignmentMode = String(describing: placeholderAlignment)
+            placeholderLayer.alignmentMode = convertToCATextLayerAlignmentMode(String(describing: placeholderAlignment))
         }
     }
 
@@ -140,7 +140,7 @@ open class AnimatedTextInput: UIControl {
         }
     }
 
-    open var textAttributes: [NSAttributedStringKey: Any]? {
+    open var textAttributes: [NSAttributedString.Key: Any]? {
         didSet {
             guard var textInputAttributes = textInput.textAttributes else {
                 textInput.textAttributes = textAttributes
@@ -220,7 +220,7 @@ open class AnimatedTextInput: UIControl {
 
     override open var intrinsicContentSize: CGSize {
         let normalHeight = textInput.view.intrinsicContentSize.height
-        return CGSize(width: UIViewNoIntrinsicMetric, height: normalHeight + style.topMargin + style.bottomMargin)
+        return CGSize(width: UIView.noIntrinsicMetric, height: normalHeight + style.topMargin + style.bottomMargin)
     }
 
     open override func updateConstraints() {
@@ -558,12 +558,12 @@ extension AnimatedTextInput: TextInputDelegate {
 
 public protocol TextInput {
     var view: UIView { get }
-    var textFieldRightViewMode: UITextFieldViewMode? { get set }
+    var textFieldRightViewMode: UITextField.ViewMode? { get set }
     var currentText: String? { get set }
     var font: UIFont? { get set }
     var textColor: UIColor? { get set }
-    var textAttributes: [NSAttributedStringKey: Any]? { get set }
-    weak var textInputDelegate: TextInputDelegate? { get set }
+    var textAttributes: [NSAttributedString.Key: Any]? { get set }
+    var textInputDelegate: TextInputDelegate? { get set }
     var currentSelectedTextRange: UITextRange? { get set }
     var currentBeginningOfDocument: UITextPosition? { get }
     var contentInset: UIEdgeInsets { get set }
@@ -571,7 +571,7 @@ public protocol TextInput {
     func configureInputView(newInputView: UIView)
     func changeReturnKeyType(with newReturnKeyType: UIReturnKeyType)
     func currentPosition(from: UITextPosition, offset: Int) -> UITextPosition?
-    func changeClearButtonMode(with newClearButtonMode: UITextFieldViewMode)
+    func changeClearButtonMode(with newClearButtonMode: UITextField.ViewMode)
 }
 
 public extension TextInput where Self: UIView {
@@ -619,3 +619,8 @@ fileprivate extension Dictionary {
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToCATextLayerAlignmentMode(_ input: String) -> CATextLayerAlignmentMode {
+	return CATextLayerAlignmentMode(rawValue: input)
+}

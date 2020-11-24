@@ -2,18 +2,18 @@ import UIKit
 
 final public class AnimatedTextView: UITextView {
 
-    public var textAttributes: [NSAttributedStringKey: Any]? {
+    public var textAttributes: [NSAttributedString.Key: Any]? {
         didSet {
             guard let attributes = textAttributes else { return }
-            typingAttributes = Dictionary(uniqueKeysWithValues: attributes.lazy.map { ($0.key.rawValue, $0.value) })
+            typingAttributes = convertToNSAttributedStringKeyDictionary(Dictionary(uniqueKeysWithValues: attributes.lazy.map { ($0.key.rawValue, $0.value) }))
         }
     }
 
     public override var font: UIFont? {
         didSet {
-            var attributes = typingAttributes
-            attributes[NSAttributedStringKey.font.rawValue] = font
-            textAttributes = Dictionary(uniqueKeysWithValues: attributes.lazy.map { (NSAttributedStringKey($0.key), $0.value)})
+            var attributes = convertFromNSAttributedStringKeyDictionary(typingAttributes)
+            attributes[NSAttributedString.Key.font.rawValue] = font
+            textAttributes = Dictionary(uniqueKeysWithValues: attributes.lazy.map { (NSAttributedString.Key($0.key), $0.value)})
         }
     }
 
@@ -51,7 +51,7 @@ extension AnimatedTextView: TextInput {
         set { self.text = newValue }
     }
     
-    public var textFieldRightViewMode: UITextFieldViewMode? {
+    public var textFieldRightViewMode: UITextField.ViewMode? {
         get { return nil }
         set { }
     }
@@ -73,7 +73,7 @@ extension AnimatedTextView: TextInput {
         return position(from: from, offset: offset)
     }
     
-    public func changeClearButtonMode(with newClearButtonMode: UITextFieldViewMode) {}
+    public func changeClearButtonMode(with newClearButtonMode: UITextField.ViewMode) {}
     
 }
 
@@ -109,4 +109,14 @@ extension AnimatedTextView: UITextViewDelegate {
     public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         return textInputDelegate?.textInputShouldEndEditing(textInput: self) ?? true
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKeyDictionary(_ input: [NSAttributedString.Key: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }
